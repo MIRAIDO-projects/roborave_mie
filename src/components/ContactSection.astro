@@ -25,7 +25,11 @@
         <div
             class="bg-gray-50 rounded-[2.5rem] p-10 md:p-14 shadow-sm reveal-on-scroll reveal-delay-500"
         >
-            <form class="space-y-8">
+            <form
+                action="https://hyperform.jp/api/v6tM5vqs"
+                method="POST"
+                class="space-y-8"
+            >
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-2">
                         <label
@@ -36,8 +40,10 @@
                         <input
                             type="text"
                             id="name"
+                            name="name"
                             class="w-full bg-white border-0 rounded-2xl px-6 py-4 text-slate-900 font-medium text-lg shadow-sm focus:ring-4 focus:ring-blue-100 transition-all placeholder:text-slate-300"
                             placeholder="山田 太郎"
+                            required
                         />
                     </div>
                     <div class="space-y-2">
@@ -49,8 +55,10 @@
                         <input
                             type="email"
                             id="email"
+                            name="email"
                             class="w-full bg-white border-0 rounded-2xl px-6 py-4 text-slate-900 font-medium text-lg shadow-sm focus:ring-4 focus:ring-blue-100 transition-all placeholder:text-slate-300"
                             placeholder="taro@example.com"
+                            required
                         />
                     </div>
                 </div>
@@ -63,6 +71,7 @@
                     >
                     <select
                         id="subject"
+                        name="subject"
                         class="w-full bg-white border-0 rounded-2xl px-6 py-4 text-slate-900 font-medium text-lg shadow-sm focus:ring-4 focus:ring-blue-100 transition-all appearance-none cursor-pointer"
                     >
                         <option>全般的なお問い合わせ</option>
@@ -81,10 +90,11 @@
                     >
                     <textarea
                         id="message"
+                        name="message"
                         rows="4"
                         class="w-full bg-white border-0 rounded-2xl px-6 py-4 text-slate-900 font-medium text-lg shadow-sm focus:ring-4 focus:ring-blue-100 transition-all placeholder:text-slate-300 resize-none"
                         placeholder="お問い合わせ内容をご記入ください"
-                    ></textarea>
+                        required></textarea>
                 </div>
 
                 <div class="pt-4">
