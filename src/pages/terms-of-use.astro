@@ -1,0 +1,87 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Terms of Use | Roborave Mie">
+    <main class="min-h-screen bg-swiss-white text-swiss-black py-24 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h1
+                class="text-5xl md:text-7xl font-black mb-12 tracking-tighter uppercase border-b-8 border-swiss-black pb-4"
+            >
+                Terms of Use
+            </h1>
+
+            <article
+                class="prose prose-xl prose-slate max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight prose-a:text-swiss-red hover:prose-a:text-swiss-black"
+            >
+                <p class="lead font-bold text-xl mb-12">
+                    Welcome to Roborave Mie. By accessing our website and
+                    participating in our events, you agree to comply with and be
+                    bound by the following terms and conditions.
+                </p>
+
+                <div
+                    class="border-4 border-black shadow-hard bg-white p-8 md:p-12 rounded-2xl overflow-hidden"
+                >
+                    <h2 class="mt-0">1. Acceptance of Terms</h2>
+                    <p>
+                        By using this website, you confirm that you accept these
+                        Terms of Use and that you agree to comply with them. If
+                        you do not agree to these terms, you must not use our
+                        site.
+                    </p>
+
+                    <h2>2. Event Participation</h2>
+                    <p>
+                        Participation in our competitions is subject to specific
+                        event rules and regulations. By registering for an
+                        event, you agree to abide by the official rules of that
+                        competition, including safety guidelines and code of
+                        conduct.
+                    </p>
+
+                    <h2>3. Intellectual Property</h2>
+                    <p>
+                        The content on this website, including text, graphics,
+                        logos, and images, is the property of Roborave Mie or
+                        its content suppliers and is protected by copyright
+                        laws. You may not reproduce, distribute, or create
+                        derivative works from this content without our express
+                        written permission.
+                    </p>
+
+                    <h2>4. User Conduct</h2>
+                    <p>
+                        You agree to use our website only for lawful purposes.
+                        You are prohibited from posting or transmitting any
+                        unlawful, threatening, libelous, defamatory, obscene, or
+                        profane material.
+                    </p>
+
+                    <h2>5. Limitation of Liability</h2>
+                    <p>
+                        We strive to ensure the accuracy of the information on
+                        our website, but we make no warranties or
+                        representations about its completeness or accuracy.
+                        Roborave Mie shall not be liable for any direct,
+                        indirect, incidental, or consequential damages arising
+                        out of your use of this website.
+                    </p>
+
+                    <h2>6. Changes to Terms</h2>
+                    <p>
+                        We reserve the right to modify these Terms of Use at any
+                        time. Your continued use of the website following any
+                        changes constitutes your acceptance of the new terms.
+                    </p>
+                </div>
+            </article>
+
+            <div class="mt-12 pt-8 border-t-2 border-gray-200">
+                <p class="text-sm opacity-60">
+                    Last updated: {new Date().toLocaleDateString("en-US")}
+                </p>
+            </div>
+        </div>
+    </main>
+</Layout>

@@ -1,0 +1,100 @@
+---
+import { getBlogs } from "../lib/microcms";
+
+// Fetch latest 3 blogs
+const { contents: blogs } = await getBlogs({ limit: 3 });
+---
+
+<section id="news" class="py-24 bg-white relative">
+    <div class="max-w-7xl mx-auto px-6">
+        <div
+            class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
+        >
+            <div class="text-left">
+                <h2
+                    class="text-blue-600 font-semibold tracking-wide uppercase mb-4 text-sm md:text-base"
+                >
+                    ニュース & 更新情報
+                </h2>
+                <h3
+                    class="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight"
+                >
+                    最新記事
+                </h3>
+            </div>
+            <a
+                href="/news"
+                class="group inline-flex items-center text-xl font-medium text-blue-600 hover:text-blue-700 transition-colors"
+            >
+                すべて見る
+                <svg
+                    class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg
+                >
+            </a>
+        </div>
+
+        {
+            blogs.length === 0 ? (
+                <div class="text-center text-gray-500 py-24 bg-gray-50 rounded-[2rem] border border-dashed border-gray-200">
+                    <p class="text-xl">現在、記事はありません。</p>
+                </div>
+            ) : (
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    {blogs.map((blog) => (
+                        <a
+                            href={`/blog/${blog.id}`}
+                            class="group group-hover:no-underline block"
+                        >
+                            <article class="flex flex-col h-full">
+                                <div class="relative overflow-hidden aspect-[16/10] bg-gray-100 rounded-3xl mb-6 shadow-sm group-hover:shadow-md transition-all duration-500">
+                                    {blog.thumbnail ? (
+                                        <img
+                                            src={blog.thumbnail.url}
+                                            alt={blog.title}
+                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                    ) : (
+                                        <div class="w-full h-full flex items-center justify-center bg-white text-blue-100">
+                                            <span class="text-5xl">📰</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div class="flex-grow">
+                                    <div class="flex items-center text-slate-400 text-sm mb-3 font-medium">
+                                        <time datetime={blog.publishedAt}>
+                                            {new Date(
+                                                blog.publishedAt,
+                                            ).toLocaleDateString("ja-JP", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            })}
+                                        </time>
+                                    </div>
+                                    <h4 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight line-clamp-2">
+                                        {blog.title}
+                                    </h4>
+                                    <p class="text-slate-500 line-clamp-2 leading-relaxed">
+                                        {blog.content
+                                            .replace(/<[^>]*>/g, "")
+                                            .substring(0, 100)}
+                                        ...
+                                    </p>
+                                </div>
+                            </article>
+                        </a>
+                    ))}
+                </div>
+            )
+        }
+    </div>
+</section>

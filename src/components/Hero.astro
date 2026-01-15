@@ -1,0 +1,252 @@
+---
+import ThreeScene from "./ThreeScene.astro";
+---
+
+<section
+    id="hero"
+    class="h-screen w-full relative flex items-center justify-center overflow-hidden"
+>
+    <!-- 3D Background Container -->
+    <div class="absolute inset-0 z-0 opacity-60">
+        <ThreeScene />
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 text-center px-4 max-w-6xl mx-auto mt-20">
+        <div class="space-y-12">
+            <h2
+                class="text-blue-600 font-semibold tracking-wide text-lg md:text-xl uppercase opacity-0 animate-[fade-up_0.8s_0.2s_forwards]"
+            >
+                International Robotics Competition
+            </h2>
+
+            <!-- Wrapper for Rise Animation -->
+            <!-- Horizon Mask Container -->
+            <div class="space-y-2">
+                <!-- Line 1 Mask -->
+                <div class="overflow-hidden">
+                    <h1
+                        class="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[1] text-slate-900 translate-y-full opacity-0 animate-sunrise"
+                        style="animation-delay: 100ms;"
+                    >
+                        Robots Are
+                    </h1>
+                </div>
+                <!-- Line 2 Mask + Float Wrapper -->
+                <div class="overflow-hidden pb-4">
+                    <!-- Padding for glow/float -->
+                    <div
+                        class="translate-y-full opacity-0 animate-sunrise px-2"
+                        style="animation-delay: 500ms;"
+                    >
+                        <div class="animate-gentle-float">
+                            <span
+                                class="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[1] text-sun-orange drop-shadow-lg shadow-sun-orange"
+                            >
+                                Very Educational
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p
+                class="text-2xl md:text-3xl text-slate-500 max-w-3xl mx-auto font-medium leading-normal opacity-0 animate-[fade-up_1s_0.6s_forwards]"
+            >
+                Ignite curiosity. Build the future. <br />
+                A global stage for young innovators.
+            </p>
+
+            <div class="pt-10 opacity-0 animate-[fade-up_1s_0.8s_forwards]">
+                <a
+                    href="#competitions"
+                    class="group inline-flex items-center gap-3 text-blue-600 font-bold text-xl hover:text-blue-700 transition-colors"
+                >
+                    Explore Competitions
+                    <svg
+                        class="w-6 h-6 group-hover:translate-y-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div
+        class="absolute bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 animate-[fade-subtle_2s_1.5s_forwards]"
+    >
+        <div class="w-[1px] h-20 bg-gradient-to-b from-blue-300 to-transparent">
+        </div>
+    </div>
+    <!-- Floating Values Animation -->
+    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <!-- New Floating Swaying Text 1 -->
+        <!-- New Floating Swaying Text 1 -->
+        <div
+            class="absolute top-[20%] left-[10%] opacity-0 animate-sway-flow"
+            style="animation-delay: 1s; animation-duration: 25s;"
+        >
+            <span
+                class="text-4xl md:text-6xl font-bold text-blue-200/60 font-mono tracking-widest whitespace-nowrap animate-pulse"
+            >
+                Today’s Play, Tomorrow’s Pay
+            </span>
+        </div>
+
+        <!-- New Floating Swaying Text 2 -->
+        <div
+            class="absolute bottom-[30%] right-[10%] opacity-0 animate-sway-flow-reverse"
+            style="animation-delay: 3s; animation-duration: 28s;"
+        >
+            <span
+                class="text-3xl md:text-5xl font-bold text-blue-200/50 font-mono tracking-widest whitespace-nowrap animate-pulse"
+            >
+                FUN is #1 priority; Winning is 2nd
+            </span>
+        </div>
+
+        <!-- Fun while Learning (Existing - kept for texture but lowered opacity/importance if needed, or keeping as is) -->
+        <div
+            class="absolute top-[15%] right-[20%] opacity-0 animate-float-value"
+            style="animation-delay: 5s; animation-duration: 10s;"
+        >
+            <span
+                class="text-2xl md:text-4xl font-bold text-slate-100/30 font-mono tracking-widest whitespace-nowrap"
+            >
+                Fun while Learning
+            </span>
+        </div>
+
+        <!-- Sharing (Existing) -->
+        <div
+            class="absolute bottom-[15%] left-[15%] opacity-0 animate-float-value"
+            style="animation-delay: 7s; animation-duration: 12s;"
+        >
+            <span
+                class="text-3xl md:text-5xl font-bold text-slate-100/30 font-mono tracking-widest"
+            >
+                Sharing
+            </span>
+        </div>
+
+        <!-- Teamwork (Existing) -->
+        <div
+            class="absolute top-[40%] left-[5%] opacity-0 animate-float-value"
+            style="animation-delay: 9s; animation-duration: 11s;"
+        >
+            <span
+                class="text-2xl md:text-4xl font-bold text-slate-100/30 font-mono tracking-widest"
+            >
+                Teamwork
+            </span>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes sunrise {
+        0% {
+            transform: translateY(110%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes float-value {
+        0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+        }
+        20% {
+            opacity: 0.6;
+            transform: translateY(0) scale(1);
+        }
+        80% {
+            opacity: 0.6;
+            transform: translateY(0) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-20px) scale(1.1);
+        }
+    }
+
+    /* Sway + Flow Animation */
+    @keyframes sway-flow {
+        0% {
+            opacity: 0;
+            transform: translate(-50px, 20px) rotate(-2deg);
+        }
+        10% {
+            opacity: 0.7;
+        }
+        50% {
+            transform: translate(0px, -20px) rotate(2deg);
+        }
+        90% {
+            opacity: 0.7;
+        }
+        100% {
+            opacity: 0;
+            transform: translate(50px, 20px) rotate(-2deg);
+        }
+    }
+
+    /* Reverse Flow */
+    @keyframes sway-flow-reverse {
+        0% {
+            opacity: 0;
+            transform: translate(50px, -20px) rotate(2deg);
+        }
+        10% {
+            opacity: 0.7;
+        }
+        50% {
+            transform: translate(0px, 20px) rotate(-2deg);
+        }
+        90% {
+            opacity: 0.7;
+        }
+        100% {
+            opacity: 0;
+            transform: translate(-50px, -20px) rotate(2deg);
+        }
+    }
+
+    .animate-sunrise-local {
+        animation: sunrise 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-float-value {
+        animation-name: float-value;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+    }
+
+    .animate-sway-flow {
+        animation-name: sway-flow;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+    }
+
+    .animate-sway-flow-reverse {
+        animation-name: sway-flow-reverse;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+    }
+</style>

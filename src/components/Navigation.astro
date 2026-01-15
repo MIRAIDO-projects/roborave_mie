@@ -1,0 +1,183 @@
+---
+const links = [
+    { text: "Home", href: "/#hero" },
+    { text: "Competition", href: "/#competitions" },
+    { text: "News", href: "/#news" },
+    { text: "aboutUs", href: "/#about" },
+    { text: "Workshop", href: "/#workshop" },
+    { text: "ContactUs", href: "/#contact" },
+];
+---
+
+<nav class="fixed w-full z-50 top-0 start-0 bg-white border-b-4 border-black">
+    <div
+        class="max-w-7xl mx-auto px-6 h-28 flex items-center justify-center relative"
+    >
+        <!-- Logo Image (Centered) -->
+        <a href="/" class="group block">
+            <img
+                src="/logo.png"
+                alt="RoboRave Mie"
+                class="h-20 md:h-24 w-auto transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
+            />
+        </a>
+
+        <!-- Right Actions (Absolute Right) -->
+        <div class="absolute right-6 flex items-center gap-4">
+            <!-- Hamburger Button (Visible on ALL screens) -->
+            <button
+                id="menu-toggle"
+                class="relative z-50 p-2 border-2 border-black bg-white shadow-neo active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all group"
+                aria-label="Menu"
+            >
+                <div class="w-8 h-8 flex flex-col justify-between p-1">
+                    <span
+                        class="w-full h-0.5 bg-black group-[.open]:rotate-45 group-[.open]:translate-y-2.5 transition-transform duration-300"
+                    ></span>
+                    <span
+                        class="w-full h-0.5 bg-black group-[.open]:opacity-0 transition-opacity duration-300"
+                    ></span>
+                    <span
+                        class="w-full h-0.5 bg-black group-[.open]:-rotate-45 group-[.open]:-translate-y-2.5 transition-transform duration-300"
+                    ></span>
+                </div>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Fullscreen Overlay Menu (Neo-Brutalist) -->
+<div
+    id="menu-overlay"
+    class="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300"
+>
+    <!-- Background Pattern -->
+    <div
+        class="absolute inset-0 opacity-10 pointer-events-none"
+        style="background-image: radial-gradient(#000 2px, transparent 2px); background-size: 20px 20px;"
+    >
+    </div>
+
+    <div class="space-y-4 text-center z-10 w-full max-w-lg px-6">
+        {
+            links.map((link) => (
+                <div class="overflow-hidden">
+                    <a
+                        href={link.href}
+                        class="menu-link block text-5xl md:text-7xl font-black text-black hover:text-sun-orange hover:italic transition-all duration-300 transform translate-y-full opacity-0"
+                        data-target={
+                            link.href.startsWith("/#")
+                                ? link.href.substring(1)
+                                : ""
+                        }
+                    >
+                        {link.text}
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+</div>
+
+<script>
+    import { gsap } from "gsap";
+
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuOverlay = document.getElementById("menu-overlay");
+    const menuLinks = document.querySelectorAll(".menu-link");
+    let isOpen = false;
+
+    // We assume Lenis is initialized globally or we can grab the instance if stored.
+    // However, since we can't easily access the main Lenis instance from here without a global store,
+    // we will rely on native scroll behavior or simple hash navigation which Lenis usually respects.
+    // If strict Lenis control is needed, we might need a custom event or window object.
+
+    // Attempting to access global lenis if available (often attached to window in some setups, but better to check)
+    // For now, we'll let standard anchor clicking handle the hash change, which Lenis should catch.
+
+    // Function to close menu
+    const closeMenu = () => {
+        if (!isOpen) return;
+        isOpen = false;
+        menuToggle?.classList.remove("open");
+        document.body.style.overflow = "";
+
+        // Animate out
+        gsap.to(menuLinks, {
+            y: "100%",
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => {
+                menuOverlay?.classList.add("pointer-events-none");
+                menuOverlay?.classList.add("opacity-0");
+            },
+        });
+    };
+
+    if (menuToggle && menuOverlay) {
+        menuToggle.addEventListener("click", () => {
+            isOpen = !isOpen;
+            menuToggle.classList.toggle("open");
+
+            if (isOpen) {
+                // Open Menu
+                menuOverlay.classList.remove("pointer-events-none");
+                menuOverlay.classList.remove("opacity-0");
+                document.body.style.overflow = "hidden";
+
+                gsap.to(menuLinks, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.4,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                });
+            } else {
+                closeMenu();
+            }
+        });
+
+        // Close on link click and handle scroll
+        menuLinks.forEach((link) => {
+            link.addEventListener("click", (e) => {
+                const href = link.getAttribute("href");
+                if (href && href.startsWith("/#")) {
+                    // It's an anchor on the homepage
+
+                    // If we are already on the homepage, prevent default and scroll
+                    if (window.location.pathname === "/") {
+                        e.preventDefault();
+                        const targetId = href.substring(2); // remove /#
+                        const targetElement = document.getElementById(targetId);
+
+                        if (targetElement) {
+                            // Close menu first
+                            closeMenu();
+
+                            // Scroll to target
+                            // Use Lenis if available on window, else native
+                            // @ts-ignore
+                            if (
+                                window.lenis &&
+                                typeof window.lenis.scrollTo === "function"
+                            ) {
+                                // @ts-ignore
+                                window.lenis.scrollTo(targetElement);
+                            } else {
+                                targetElement.scrollIntoView({
+                                    behavior: "smooth",
+                                });
+                            }
+                        }
+                    } else {
+                        // If not on homepage, let default happen (it will load /#id)
+                        closeMenu();
+                    }
+                } else {
+                    closeMenu();
+                }
+            });
+        });
+    }
+</script>

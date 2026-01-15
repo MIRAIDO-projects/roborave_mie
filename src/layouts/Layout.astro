@@ -1,22 +1,127 @@
+---
+import Navigation from "../components/Navigation.astro";
+import SEO from "../components/SEO.astro";
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+	article?: boolean;
+}
+
+const { title, description, image, article } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="ja" class="scroll-smooth">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<SEO
+			title={title}
+			description={description}
+			image={image}
+			article={article}
+		/>
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
-	<body>
-		<slot />
+	<body
+		class="bg-primary text-text-main font-sans antialiased overflow-x-hidden selection:bg-accent selection:text-white"
+	>
+		<Navigation />
+		<main class="pt-20">
+			<slot />
+		</main>
+		<footer
+			class="bg-gray-50 py-12 mt-20 text-xs text-gray-400 font-sans border-t border-gray-200"
+		>
+			<div class="max-w-7xl mx-auto px-6">
+				<div
+					class="flex flex-col md:flex-row justify-between items-center gap-4"
+				>
+					<p>
+						&copy; {new Date().getFullYear()} RoboRAVE Mie. All rights
+						reserved.
+					</p>
+					<div class="flex gap-6">
+						<a
+							href="/privacy-policy"
+							class="hover:text-gray-900 transition-colors"
+							>Privacy Policy</a
+						>
+						<a
+							href="/terms-of-use"
+							class="hover:text-gray-900 transition-colors"
+							>Terms of Use</a
+						>
+						<a
+							href="/legal"
+							class="hover:text-gray-900 transition-colors"
+							>Legal</a
+						>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			import Lenis from "lenis";
+
+			// Initialize Lenis
+			const lenis = new Lenis({
+				duration: 1.2,
+				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+				direction: "vertical",
+				gestureDirection: "vertical",
+				smooth: true,
+				mouseMultiplier: 1,
+				smoothTouch: false,
+				touchMultiplier: 2,
+			});
+
+			// Expose lenis to window for usage in other components (Navigation)
+			// @ts-ignore
+			window.lenis = lenis;
+
+			function raf(time) {
+				lenis.raf(time);
+				requestAnimationFrame(raf);
+			}
+
+			requestAnimationFrame(raf);
+
+			// Simple Scroll Observer to trigger animations
+			document.addEventListener("DOMContentLoaded", () => {
+				const observerOptions = {
+					root: null,
+					rootMargin: "0px",
+					threshold: 0.1,
+				};
+
+				const observer = new IntersectionObserver(
+					(entries, observer) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting) {
+								entry.target.classList.add("in-view");
+								observer.unobserve(entry.target);
+							}
+						});
+					},
+					observerOptions,
+				);
+
+				const animatedElements = document.querySelectorAll(
+					'[class*="animate-"]',
+				);
+				animatedElements.forEach((el) => {
+					observer.observe(el);
+				});
+			});
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

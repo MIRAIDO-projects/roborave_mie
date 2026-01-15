@@ -1,0 +1,196 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactSection from "../components/ContactSection.astro";
+---
+
+<Layout title="Workshop | Roborave Mie">
+    <!-- Noise Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.05] bg-noise">
+    </div>
+
+    <main
+        class="min-h-screen bg-swiss-white text-swiss-black selection:bg-swiss-red selection:text-white pt-24 pb-12"
+    >
+        <!-- Header -->
+        <header class="max-w-7xl mx-auto px-6 mb-20 relative">
+            <a
+                href="/#workshop"
+                class="inline-flex items-center gap-2 font-bold text-swiss-black hover:text-swiss-red transition-colors border-2 border-black bg-white px-6 py-3 rounded-full shadow-hard-sm hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] mb-12"
+            >
+                <span>←</span> BACK
+            </a>
+
+            <div
+                class="flex flex-col md:flex-row items-end justify-between gap-8"
+            >
+                <div>
+                    <h1
+                        class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-4"
+                    >
+                        Workshop
+                    </h1>
+                    <p
+                        class="text-2xl md:text-3xl font-bold text-swiss-red tracking-wide uppercase border-l-8 border-swiss-red pl-6 py-2"
+                    >
+                        ロボット講習会
+                    </p>
+                </div>
+                <div
+                    class="bg-black text-white p-6 border-2 border-black shadow-hard transform -rotate-3 hidden md:block"
+                >
+                    <p class="font-mono text-sm opacity-70 mb-2">STATUS</p>
+                    <p
+                        class="text-4xl font-black font-mono tracking-widest text-green-400 animate-pulse"
+                    >
+                        OPEN
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Grid -->
+        <section class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                <!-- Intro Card -->
+                <div
+                    class="md:col-span-8 bg-white border-4 border-black p-8 md:p-12 shadow-hard rounded-[2.5rem]"
+                >
+                    <h2
+                        class="text-4xl font-black mb-8 flex items-center gap-4"
+                    >
+                        <span class="w-4 h-4 bg-swiss-red rounded-full"></span>
+                        OVERVIEW
+                    </h2>
+                    <p
+                        class="text-xl font-medium leading-relaxed text-slate-700 mb-6"
+                    >
+                        ロボットプログラミングをやってみたい、RoboRAVEに出場したいけどどのような改造やプログラムが必要かわからない...
+                        そんなロボットプログラミングに関するヘルプが必要な方は是非ご参加ください。
+                    </p>
+                    <p class="text-lg text-slate-600">
+                        ※360Inc.の協力のもと開催しています。
+                    </p>
+                </div>
+
+                <!-- Info Card -->
+                <div
+                    class="md:col-span-4 bg-swiss-red text-white border-4 border-black p-8 shadow-hard rounded-[2.5rem] flex flex-col justify-between"
+                >
+                    <div>
+                        <h3 class="font-mono text-sm opacity-80 uppercase mb-4">
+                            TARGET AUDIENCE
+                        </h3>
+                        <p class="text-4xl font-black mb-8">小学3年生以上</p>
+                    </div>
+                    <div>
+                        <h3 class="font-mono text-sm opacity-80 uppercase mb-4">
+                            PARTICIPATION FEE
+                        </h3>
+                        <p class="text-4xl font-black">無料 (Free)</p>
+                        <p class="text-4xl font-black">
+                            ロボットレンタル費 500円 (1回)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Schedule & Details -->
+                <div
+                    class="md:col-span-12 bg-gray-50 border-4 border-black p-8 md:p-12 shadow-hard rounded-[2.5rem]"
+                >
+                    <h2
+                        class="text-4xl font-black mb-12 flex items-center gap-4"
+                    >
+                        <span class="w-4 h-4 bg-black rounded-full"></span>
+                        DETAILS
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-8">
+                            <div class="border-l-4 border-black pl-6">
+                                <h4
+                                    class="font-bold text-gray-500 text-sm uppercase tracking-wider mb-2"
+                                >
+                                    日時
+                                </h4>
+                                <p class="text-2xl font-black">
+                                    土曜日 (不定期)
+                                </p>
+                                <p class="text-xl font-bold mt-1">
+                                    16:20 - 17:50 (1時間30分)
+                                </p>
+                            </div>
+
+                            <div class="border-l-4 border-black pl-6">
+                                <h4
+                                    class="font-bold text-gray-500 text-sm uppercase tracking-wider mb-2"
+                                >
+                                    場所
+                                </h4>
+                                <p class="text-2xl font-black">
+                                    開催場所 (Mie Venue)
+                                </p>
+                                <p class="text-lg text-gray-600 mt-2">
+                                    ※ 実際の開催場所は三重県の会場となります。<br
+                                    />
+                                    (詳細は運営事務局までお問い合わせください)
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div
+                                class="bg-white p-6 rounded-2xl border-2 border-gray-200"
+                            >
+                                <h4 class="font-black text-lg mb-4">
+                                    ✅ 持ち物
+                                </h4>
+                                <ul
+                                    class="space-y-3 font-medium text-slate-700"
+                                >
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-swiss-red">●</span>
+                                        ロボットをお持ちの方はご持参ください(LEGO
+                                        SPIKE PRIME / MINDSTORMS EV3)
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-green-500">●</span>
+                                        貸出用ロボット(1回500円)あり（手ぶらでOK）
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-blue-500">●</span>
+                                        飲み物（※蓋付きの容器でご持参ください）
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="bg-white p-6 rounded-2xl border-2 border-gray-200"
+                            >
+                                <h4 class="font-black text-lg mb-4">
+                                    ⚠️ 注意事項
+                                </h4>
+                                <ul
+                                    class="space-y-3 font-medium text-slate-700"
+                                >
+                                    <li class="flex items-start gap-2">
+                                        <span>・</span>
+                                        事前申し込みが必要です。
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span>・</span>
+                                        低学年のお子様は保護者同伴でお願いします。
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Wrapper -->
+        <div class="mt-20">
+            <ContactSection />
+        </div>
+    </main>
+</Layout>

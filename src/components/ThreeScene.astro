@@ -1,0 +1,167 @@
+<div id="three-container" class="absolute inset-0 z-0"></div>
+
+<script>
+    import * as THREE from "three";
+    import gsap from "gsap";
+
+    // Scene Setup
+    const container = document.getElementById("three-container");
+    if (container) {
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0xffffff, 0.02); // White Fog
+
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000,
+        );
+        const renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        camera.position.set(0, 10, 30);
+        camera.lookAt(0, 0, 0);
+
+        // WAVE PARTICLES
+        const particlesGeometry = new THREE.BufferGeometry();
+        const count = 8000; // Increased density
+
+        const positions = new Float32Array(count * 3);
+        const initialPositions = new Float32Array(count * 3); // Store initial state for restoration
+
+        let i = 0;
+        const rows = 100;
+        const cols = 80;
+
+        for (let x = 0; x < rows; x++) {
+            for (let z = 0; z < cols; z++) {
+                const u = (x / rows) * 120 - 60;
+                const v = (z / cols) * 60 - 30;
+
+                positions[i * 3] = u;
+                positions[i * 3 + 1] = 0;
+                positions[i * 3 + 2] = v;
+
+                initialPositions[i * 3] = u;
+                initialPositions[i * 3 + 1] = 0;
+                initialPositions[i * 3 + 2] = v;
+
+                i++;
+            }
+        }
+
+        particlesGeometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(positions, 3),
+        );
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0x0284c7, // Strong Blue (Sky 600)
+            size: 0.15,
+            sizeAttenuation: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.NormalBlending, // Additive doesn't show well on white
+        });
+
+        const particlesMesh = new THREE.Points(
+            particlesGeometry,
+            particlesMaterial,
+        );
+        scene.add(particlesMesh);
+
+        // Interaction Plane (Invisible plane for raycasting)
+        const planeGeometry = new THREE.PlaneGeometry(200, 200);
+        const planeMaterial = new THREE.MeshBasicMaterial({ visible: false });
+        const rayPlane = new THREE.Mesh(planeGeometry, planeMaterial);
+        rayPlane.rotation.x = -Math.PI / 2;
+        scene.add(rayPlane);
+
+        // Raycaster
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
+        let intersectPoint = new THREE.Vector3();
+
+        // Animate
+        const clock = new THREE.Clock();
+
+        const tick = () => {
+            const elapsedTime = clock.getElapsedTime();
+
+            // Raycasting
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObject(rayPlane);
+
+            if (intersects.length > 0) {
+                intersectPoint = intersects[0].point;
+            }
+
+            // Wave Animation
+            const positions = particlesGeometry.attributes.position.array;
+
+            for (let i = 0; i < count; i++) {
+                const x = initialPositions[i * 3];
+                const z = initialPositions[i * 3 + 2];
+
+                // Base Ocean Wave
+                let y =
+                    Math.sin(x * 0.2 + elapsedTime * 0.8) * 1.5 +
+                    Math.sin(z * 0.3 + elapsedTime * 0.5) * 1;
+
+                // Interactive Ripple
+                // Calculate distance from particle to mouse intersection
+                const dx = x - intersectPoint.x;
+                const dz = z - intersectPoint.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+
+                // If close to mouse, add ripple effect
+                if (dist < 15) {
+                    const force = (15 - dist) / 15; // 1 at center, 0 at edge
+                    // Ripple formula: sin(distance * freq - fast_time) * decay
+                    const ripple =
+                        Math.sin(dist * 2 - elapsedTime * 5) * 3 * force;
+                    y += ripple;
+                }
+
+                positions[i * 3 + 1] = y;
+            }
+            particlesGeometry.attributes.position.needsUpdate = true;
+
+            // Camera drift
+            camera.position.x += (pointer.x * 2 - camera.position.x) * 0.02;
+            camera.position.y +=
+                (-pointer.y * 2 + 10 - camera.position.y) * 0.02;
+
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(tick);
+        };
+
+        tick();
+
+        // Resize
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Mouse Move
+        window.addEventListener("mousemove", (event) => {
+            pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+            pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Intro
+        gsap.from(particlesMaterial, {
+            opacity: 0,
+            duration: 2,
+            ease: "power2.inOut",
+        });
+    }
+</script>

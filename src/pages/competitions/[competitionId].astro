@@ -1,0 +1,429 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCompetitions, type Competition } from "../../lib/microcms";
+
+export async function getStaticPaths() {
+    const response = await getCompetitions({ limit: 100 });
+    return response.contents.map((competition) => ({
+        params: { competitionId: competition.id },
+        props: { competition },
+    }));
+}
+
+type Props = {
+    competition: Competition;
+};
+
+const { competition } = Astro.props;
+---
+
+<Layout title={`${competition.title} | Roborave Mie`}>
+    <!-- Noise Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.05] bg-noise">
+    </div>
+
+    <!-- Custom Cursor -->
+    <div
+        id="custom-cursor"
+        class="fixed w-6 h-6 bg-swiss-red rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block"
+    >
+    </div>
+
+    <main
+        class="min-h-screen bg-swiss-white text-swiss-black overflow-x-hidden selection:bg-swiss-red selection:text-white"
+    >
+        <!-- Kinetic Header Section -->
+        <header class="relative pt-24 pb-12 px-6 border-b-4 border-black">
+            <!-- Marquee Text -->
+            <div
+                class="absolute top-0 left-0 w-full overflow-hidden opacity-10 pointer-events-none select-none"
+            >
+                <div
+                    class="kinetic-text whitespace-nowrap text-[12rem] font-black leading-none uppercase text-swiss-black"
+                >
+                    {competition.title} &nbsp; {competition.title} &nbsp; {
+                        competition.title
+                    } &nbsp;
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <!-- Back Button -->
+                <a
+                    href="/#competitions"
+                    class="inline-flex items-center gap-2 font-bold text-swiss-black hover:text-swiss-red transition-colors border-2 border-black bg-white px-6 py-3 rounded-full shadow-hard-sm hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] mb-12"
+                    data-cursor-hover
+                >
+                    <span>←</span> BACK TO LIST
+                </a>
+
+                <div
+                    class="flex flex-col md:flex-row items-start md:items-end justify-between gap-8"
+                >
+                    <div>
+                        <span class="block mb-6 animate-float">
+                            {
+                                competition.id === "amazing" ? (
+                                    <img
+                                        src="/amazing-red-icon.jpg"
+                                        alt="a-MAZE-ing Challenge Icon"
+                                        class="w-24 md:w-32 h-auto rounded-3xl"
+                                    />
+                                ) : competition.id === "sumobot" ? (
+                                    <img
+                                        src="/sumobot-red-icon.jpg"
+                                        alt="SumoBot Challenge Icon"
+                                        class="w-24 md:w-32 h-auto rounded-3xl"
+                                    />
+                                ) : competition.id === "line-following" ? (
+                                    <img
+                                        src="/line-following-red-icon.jpg"
+                                        alt="Line Following Challenge Icon"
+                                        class="w-24 md:w-32 h-auto rounded-3xl"
+                                    />
+                                ) : (
+                                    <span class="text-8xl md:text-9xl">
+                                        {competition.icon}
+                                    </span>
+                                )
+                            }
+                        </span>
+                        <h1
+                            class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-4 split-text"
+                        >
+                            {competition.title}
+                        </h1>
+                        <p
+                            class="text-2xl md:text-3xl font-bold text-swiss-red tracking-wide uppercase border-l-8 border-swiss-red pl-6 py-2"
+                        >
+                            {competition.subtitle}
+                        </p>
+                    </div>
+                    <div
+                        class="bg-swiss-black text-swiss-white p-6 border-2 border-black shadow-hard transform rotate-2 hidden md:block max-w-xs"
+                    >
+                        <p class="font-mono text-sm opacity-70 mb-2">
+                            CATEGORY ID
+                        </p>
+                        <p
+                            class="text-4xl font-black font-mono tracking-widest"
+                        >
+                            {competition.id.toUpperCase().substring(0, 6)}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Bento Grid Section -->
+        <section class="max-w-7xl mx-auto px-4 md:px-6 py-20">
+            <div
+                class="grid grid-cols-1 md:grid-cols-12 gap-8 auto-rows-[minmax(200px,auto)]"
+            >
+                <!-- Feature 1: Description (Large Tile) -->
+                <div
+                    class="md:col-span-8 md:row-span-2 group bg-white border-4 border-black p-8 md:p-12 shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] flex flex-col justify-center relative overflow-hidden bento-card"
+                >
+                    <h2
+                        class="text-4xl font-black mb-6 uppercase flex items-center gap-4"
+                    >
+                        <div class="w-4 h-4 bg-swiss-red rounded-full"></div>
+                        Overview
+                    </h2>
+                    <p
+                        class="text-xl md:text-2xl font-medium leading-relaxed text-slate-800 relative z-10"
+                    >
+                        {competition.description}
+                    </p>
+                    <div
+                        class="absolute -bottom-10 -right-10 w-64 h-64 bg-swiss-red/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"
+                    >
+                    </div>
+                </div>
+
+                <!-- Feature 2: Image (Tall Tile) -->
+                {
+                    competition.eyecatch && (
+                        <div class="md:col-span-4 md:row-span-3 bg-black border-4 border-black p-2 shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] bento-card group">
+                            <div class="w-full h-full rounded-[1.5rem] overflow-hidden relative">
+                                <img
+                                    src={competition.eyecatch.url}
+                                    alt={competition.title}
+                                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110"
+                                />
+                                <div class="absolute inset-0 bg-swiss-red/20 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            </div>
+                        </div>
+                    )
+                }
+
+                <!-- Feature 3: Status (Small Tile) -->
+                <div
+                    class="md:col-span-4 md:row-span-1 bg-swiss-red border-4 border-black p-8 shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] flex flex-col justify-between text-white bento-card"
+                >
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-mono text-sm opacity-80 uppercase">
+                            Competition Status
+                        </h3>
+                        <div
+                            class="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"
+                        >
+                        </div>
+                    </div>
+                    <p class="text-4xl font-black font-mono">ENTRY OPEN</p>
+                </div>
+
+                <!-- Feature 4: Specs & Visuals (Wide Tile) -->
+                {
+                    competition.specs && (
+                        <div class="md:col-span-8 bg-white border-4 border-black p-8 md:p-12 shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] bento-card relative overflow-hidden group">
+                            <h2 class="text-4xl font-black mb-8 uppercase flex items-center gap-4 border-b-4 border-black pb-4 relative z-10">
+                                <div class="w-4 h-4 bg-black rounded-full" />
+                                Specs & Regulations
+                            </h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                                <div class="space-y-6">
+                                    {competition.specs.map((spec) => (
+                                        <div class="border-b-2 border-gray-100 pb-2">
+                                            <p class="font-bold text-gray-400 text-sm uppercase tracking-wider mb-1">
+                                                {spec.label}
+                                            </p>
+                                            <p class="font-black text-xl text-swiss-black">
+                                                {spec.value}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                <!-- Visual: Maze/Board Diagram Placeholder -->
+                                <div class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200 flex items-center justify-center min-h-[200px]">
+                                    {competition.id === 'amazing' ? (
+                                        <svg class="w-full h-full max-w-[200px] text-swiss-black opacity-20 group-hover:opacity-100 transition-opacity duration-500" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4">
+                                            <rect x="5" y="5" width="90" height="90" rx="5" />
+                                            <path d="M5 25h30v50H5 M95 75H65V25h30" />
+                                            <circle cx="50" cy="50" r="10" stroke-dasharray="4 4" />
+                                        </svg>
+                                    ) : competition.id === 'sumobot' ? (
+                                        <svg class="w-full h-full max-w-[200px] text-swiss-black opacity-20 group-hover:opacity-100 transition-opacity duration-500" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4">
+                                            <circle cx="50" cy="50" r="45" />
+                                            <path d="M30 50h40 M50 30v40" stroke-width="2" class="opacity-50"/>
+                                        </svg>
+                                    ) : (
+                                        <svg class="w-full h-full max-w-[200px] text-swiss-black opacity-20 group-hover:opacity-100 transition-opacity duration-500" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4">
+                                             <path d="M10 90 Q 50 10 90 90" />
+                                             <circle cx="50" cy="50" r="5" fill="currentColor" />
+                                        </svg>
+                                    )}
+                                    <p class="absolute bottom-4 right-6 font-mono text-xs opacity-50">DIAGRAM: {competition.id.toUpperCase()}</p>
+                                </div>
+                            </div>
+                        </div>
+                   )
+                }
+
+                <!-- Feature 5: Rules (Standard) -->
+                <div
+                    class="md:col-span-12 bg-gray-50 border-4 border-black p-8 md:p-12 shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] bento-card relative"
+                >
+                     <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <span class="text-9xl">📜</span>
+                     </div>
+                    <h2
+                        class="text-4xl font-black mb-8 uppercase flex items-center gap-4 border-b-4 border-black pb-4"
+                    >
+                        <div class="w-4 h-4 bg-swiss-red rounded-full"></div>
+                        Detailed Rules
+                    </h2>
+                    <div
+                        class="rich-text-content prose prose-xl prose-slate max-w-none font-medium text-slate-800"
+                        set:html={competition.rules}
+                    />
+                </div>
+
+                <!-- Feature 6: Scoring (Full Width) -->
+                {
+                    competition.scoring && (
+                        <div class="md:col-span-12 bg-swiss-black text-white border-4 border-black p-8 md:p-12 shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] bento-card">
+                            <h2 class="text-4xl font-black mb-12 uppercase flex items-center gap-4 text-white border-b-4 border-white/20 pb-4">
+                                <div class="w-4 h-4 bg-swiss-red rounded-full animate-pulse" />
+                                Scoring Breakdown
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {competition.scoring.map((score, index) => (
+                                    <div class="relative group">
+                                        <div class="absolute -left-4 -top-4 text-6xl font-black text-white/10 select-none group-hover:text-swiss-red/20 transition-colors">
+                                            0{index + 1}
+                                        </div>
+                                        <div class="relative z-10 pl-6 border-l-2 border-swiss-red/50 group-hover:border-swiss-red transition-colors duration-500">
+                                            <h4 class="text-xl font-bold text-swiss-red mb-2 uppercase tracking-wider">{score.label}</h4>
+                                            <p class="text-3xl font-black mb-2">{score.points}</p>
+                                            {score.note && <p class="text-sm text-gray-400 font-mono">{score.note}</p>}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+
+                <!-- Feature 5: CTA (Action Tile) -->
+                <div
+                    class="md:col-span-4 bg-swiss-black text-swiss-white border-4 border-black shadow-hard hover:shadow-hard-xl transition-all duration-300 rounded-[2rem] overflow-hidden relative group cursor-pointer bento-card"
+                    data-cursor-hover
+                >
+                    <a
+                        href="#entry"
+                        class="block p-8 h-full flex flex-col justify-center items-center text-center relative z-10"
+                    >
+                        <p class="text-lg font-mono mb-2 text-swiss-red">
+                            READY TO JOIN?
+                        </p>
+                        <h3
+                            class="text-5xl font-black italic group-hover:scale-110 transition-transform duration-300"
+                        >
+                            ENTER NOW
+                        </h3>
+                        <div
+                            class="mt-6 w-16 h-16 rounded-full border-2 border-white flex items-center justify-center group-hover:bg-swiss-red group-hover:border-swiss-red transition-colors duration-300"
+                        >
+                            <span
+                                class="text-2xl transition-transform group-hover:rotate-45 duration-300"
+                                >↗</span
+                            >
+                        </div>
+                    </a>
+                    <!-- Hover sweep effect -->
+                    <div
+                        class="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"
+                    >
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import Lenis from "lenis";
+
+    // Initialize Lenis
+    const lenis = new Lenis({
+        lerp: 0.1, // Smoothness (0-1). Lower is smoother.
+        smoothWheel: true,
+    });
+
+    // Synchronize Lenis with GSAP ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Custom Cursor Logic
+    const cursor = document.getElementById("custom-cursor");
+    const hoverElements = document.querySelectorAll("[data-cursor-hover]");
+
+    if (cursor) {
+        gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+        let xTo = gsap.quickTo(cursor, "x", { duration: 0.2, ease: "power3" }),
+            yTo = gsap.quickTo(cursor, "y", { duration: 0.2, ease: "power3" });
+
+        window.addEventListener("mousemove", (e) => {
+            xTo(e.clientX);
+            yTo(e.clientY);
+        });
+
+        hoverElements.forEach((el) => {
+            el.addEventListener("mouseenter", () => {
+                gsap.to(cursor, { scale: 3, duration: 0.3 });
+            });
+            el.addEventListener("mouseleave", () => {
+                gsap.to(cursor, { scale: 1, duration: 0.3 });
+            });
+        });
+    }
+
+    // Kinetic Text Animation
+    gsap.to(".kinetic-text", {
+        xPercent: -50,
+        ease: "none",
+        scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+        },
+    });
+
+    // Staggered Title Animation
+    const splitText = document.querySelector(".split-text");
+    if (splitText && splitText.textContent) {
+        // Simple manual split since SplitText is a paid plugin - keeping it simple for now
+        const chars = splitText.textContent.split("");
+        // splitText.innerHTML = chars.map(char => `<span class="inline-block">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+
+        gsap.from(".split-text", {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out",
+            stagger: 0.05,
+        });
+    }
+
+    // Bento Cards Scroll Animation
+    const cards = document.querySelectorAll(".bento-card");
+    cards.forEach((card, i) => {
+        gsap.from(card, {
+            y: 100,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: card,
+                start: "top 90%", // Trigger slightly earlier
+            },
+            delay: i * 0.1,
+        });
+    });
+</script>
+
+<style is:global>
+    /* Custom Styling for Rich Text Content from CMS */
+    .rich-text-content h3 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+        color: #0f172a;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .rich-text-content p {
+        margin-bottom: 1em;
+        line-height: 1.8;
+    }
+    .rich-text-content ul {
+        list-style-type: square;
+        padding-left: 1.5em;
+        margin-bottom: 1em;
+    }
+    .rich-text-content li span {
+        color: #1a1a1a;
+    }
+    .rich-text-content li {
+        margin-bottom: 0.5em;
+        color: #1a1a1a;
+    }
+    .rich-text-content ul li::marker {
+        color: #ff4400; /* Swiss Red Bullets */
+    }
+</style>
