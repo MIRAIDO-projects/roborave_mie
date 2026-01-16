@@ -6,17 +6,16 @@ import { getBlogs } from "../../lib/microcms";
 const { contents: blogs } = await getBlogs();
 ---
 
-<Layout title="News & Updates | Roborave Mie">
+<Layout title="お知らせ | Roborave Mie">
     <div class="pt-32 pb-20 bg-gray-50 min-h-screen">
         <div class="max-w-screen-xl mx-auto px-4">
             <!-- Page Header -->
             <div class="text-center mb-16">
                 <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                    News & Updates
+                    お知らせ
                 </h1>
                 <p class="text-slate-600 text-lg max-w-2xl mx-auto">
-                    Stay up to date with the latest announcements, competition
-                    results, and behind-the-scenes stories.
+                    最新のお知らせ、競技結果、その他活動報告などをお届けします。
                 </p>
             </div>
 
@@ -26,7 +25,7 @@ const { contents: blogs } = await getBlogs();
                     <div class="text-center py-20">
                         <div class="text-6xl mb-4">📭</div>
                         <p class="text-xl text-gray-500">
-                            No news articles found.
+                            記事が見つかりませんでした。
                         </p>
                     </div>
                 ) : (
@@ -72,7 +71,7 @@ const { contents: blogs } = await getBlogs();
                                             ...
                                         </p>
                                         <div class="mt-4 flex items-center text-blue-600 font-bold text-sm">
-                                            Read More
+                                            続きを読む
                                             <svg
                                                 class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
                                                 fill="none"
