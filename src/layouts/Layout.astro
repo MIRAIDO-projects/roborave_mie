@@ -1,6 +1,8 @@
 ---
 import Navigation from "../components/Navigation.astro";
+import Footer from "../components/Footer.astro";
 import SEO from "../components/SEO.astro";
+import CookieBanner from "../components/CookieBanner.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -37,37 +39,8 @@ const { title, description, image, article } = Astro.props;
 		<main class="pt-20">
 			<slot />
 		</main>
-		<footer
-			class="bg-gray-50 py-12 mt-20 text-xs text-gray-400 font-sans border-t border-gray-200"
-		>
-			<div class="max-w-7xl mx-auto px-6">
-				<div
-					class="flex flex-col md:flex-row justify-between items-center gap-4"
-				>
-					<p>
-						&copy; {new Date().getFullYear()} RoboRAVE Mie. All rights
-						reserved.
-					</p>
-					<div class="flex gap-6">
-						<a
-							href="/privacy-policy"
-							class="hover:text-gray-900 transition-colors"
-							>Privacy Policy</a
-						>
-						<a
-							href="/terms-of-use"
-							class="hover:text-gray-900 transition-colors"
-							>Terms of Use</a
-						>
-						<a
-							href="/legal"
-							class="hover:text-gray-900 transition-colors"
-							>Legal</a
-						>
-					</div>
-				</div>
-			</div>
-		</footer>
+		<Footer />
+		<CookieBanner />
 
 		<script>
 			import Lenis from "lenis";
