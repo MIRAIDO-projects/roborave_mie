@@ -1,0 +1,85 @@
+---
+/**
+ * AccessibleCanvas.astro
+ *
+ * Solves the "Black Box Problem" of WebGL/Canvas for AI agents (LLMs).
+ * Renders a hidden HTML structure alongside the Canvas element, providing
+ * semantic meaning to the 3D content for non-visual parsers.
+ */
+
+interface Props {
+    // Title/Description for accessible fallback
+    title: string;
+    description: string;
+    // Optional detailed content (e.g., from CMS) as HTML string or structured data
+    detailedContent?: string;
+    // Fallback image source for when JS/WebGL is disabled or loading
+    fallbackImage?: string;
+    fallbackAlt?: string;
+    // Canvas size/styling
+    className?: string;
+}
+
+const {
+    title,
+    description,
+    detailedContent,
+    fallbackImage,
+    fallbackAlt = "3D visual representation",
+    className = "w-full h-full",
+} = Astro.props;
+---
+
+<div class={`relative ${className}`} role="region" aria-label={title}>
+    <!--
+    Hidden Semantic Content for AI/Screen Readers ("Shadow DOM" Strategy)
+    Uses 'sr-only' (Tailwind) or similar technique to hide visually but remain in DOM.
+    Crucial for LLMs to "see" what the 3D scene represents.
+  -->
+    <div class="sr-only select-none pointer-events-none">
+        <article>
+            <h1>{title}</h1>
+            <p>{description}</p>
+            {detailedContent && <div set:html={detailedContent} />}
+            <!--
+         Additional structured data can be placed here if needed,
+         or use the Head component for JSON-LD.
+      -->
+        </article>
+    </div>
+
+    <!-- Fallback Image (LCP Optimization) -->
+    {
+        fallbackImage && (
+            <img
+                src={fallbackImage}
+                alt={fallbackAlt}
+                class="absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 opacity-100 js-canvas-fallback"
+            />
+        )
+    }
+
+    <!-- WebGL/Three.js Canvas Container -->
+    <!-- The actual <canvas> should be injected here via slot or client-side script -->
+    <div class="absolute inset-0 z-10">
+        <slot />
+    </div>
+</div>
+
+<script>
+    // Simple logic to fade out fallback when canvas is ready (if needed)
+    // This depends on how the child Three.js component signals readiness.
+    // For now, this is a placeholder for that interaction.
+    const cleanupFallback = () => {
+        const fallback = document.querySelector(
+            ".js-canvas-fallback",
+        ) as HTMLElement;
+        if (fallback) {
+            fallback.style.opacity = "0";
+            setTimeout(() => fallback.remove(), 500);
+        }
+    };
+
+    // Example: Listen for a custom event from the child component
+    window.addEventListener("three-canvas-ready", cleanupFallback);
+</script>
